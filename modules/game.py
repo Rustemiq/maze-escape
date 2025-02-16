@@ -1,5 +1,5 @@
 import pygame
-from modules.drawing import draw_all
+from modules.ray_casting import ray_casting
 from modules.player import Player
 from modules.constants import *
 from modules.maze_generator import MazeGenerator
@@ -8,7 +8,7 @@ from modules.maze_generator import MazeGenerator
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("2d_version")
+        pygame.display.set_caption("MazeEscape")
         size = WIDTH, HEIGHT
         self.screen = pygame.display.set_mode(size)
         self.clock = pygame.time.Clock()
@@ -19,7 +19,9 @@ class Game:
             TILE_SIZE, TILE_SIZE, self.player_group, self.all_sprites
         )
         self.running = True
-        MazeGenerator().generate_maze()
+        maze_generator = MazeGenerator()
+        maze_generator.generate_maze()
+        self.maze = maze_generator.maze
 
     def run(self):
         while self.running:
@@ -27,8 +29,9 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            draw_all(self.screen, self.player)
+            ray_casting(
+                self.screen, self.player.pos, self.player.direction, self.maze
+            )
             self.player.movement()
-            #ray_casting(self.screen, self.player.pos, self.player.direction)
             self.clock.tick(FPS)
             pygame.display.flip()
