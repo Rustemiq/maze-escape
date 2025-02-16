@@ -12,26 +12,42 @@ class Player(pygame.sprite.Sprite):
         self.direction = math.pi / 2
         self.speed = 2
 
-    def movement(self):
+    def detect_collision(self, x, y, dx, dy, collision_walls):
+        new_rect_x = pygame.rect.Rect(x + dx, y, self.rect.w, self.rect.h)
+        new_rect_y = pygame.rect.Rect(x, y + dy, self.rect.w, self.rect.h)
+
+        collide_list_x = new_rect_x.collidelistall(collision_walls)
+        collide_list_y = new_rect_y.collidelistall(collision_walls)
+        if len(collide_list_x) != 0:
+            dx = 0
+        if len(collide_list_y) != 0:
+            dy = 0
+        return dx, dy
+
+    def movement(self, collision_walls):
         keys = pygame.key.get_pressed()
         sin_d = math.sin(self.direction)
         cos_d = math.cos(self.direction)
+        dx, dy = 0, 0
         if keys[pygame.K_w]:
-            self.x += self.speed * cos_d
-            self.y += self.speed * sin_d
+            dx += self.speed * cos_d
+            dy += self.speed * sin_d
         if keys[pygame.K_s]:
-            self.x -= self.speed * cos_d
-            self.y -= self.speed * sin_d
+            dx -= self.speed * cos_d
+            dy -= self.speed * sin_d
         if keys[pygame.K_a]:
-            self.x += self.speed * sin_d
-            self.y += -self.speed * cos_d
+            dx += self.speed * sin_d
+            dy += -self.speed * cos_d
         if keys[pygame.K_d]:
-            self.x += -self.speed * sin_d
-            self.y += self.speed * cos_d
+            dx += -self.speed * sin_d
+            dy += self.speed * cos_d
         if keys[pygame.K_RIGHT]:
             self.direction += 0.03
         if keys[pygame.K_LEFT]:
             self.direction -= 0.03
+        dx, dy = self.detect_collision(self.x, self.y, dx, dy, collision_walls)
+        self.x += dx
+        self.y += dy
         self.rect.x = self.x
         self.rect.y = self.y
 

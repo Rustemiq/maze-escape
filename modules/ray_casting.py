@@ -50,7 +50,7 @@ def ray_casting(screen, player_pos, player_direction, maze):
         else:
             proj_height = 0
         c = 255 / (1 + depth**2 / 10000)
-        color = c, c, c
+        color = c / 2, c, c / 2
         pygame.draw.rect(
             screen,
             color,

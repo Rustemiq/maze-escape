@@ -21,7 +21,9 @@ class Game:
         self.running = True
         maze_generator = MazeGenerator()
         maze_generator.generate_maze()
+        maze_generator.fill_collision_walls()
         self.maze = maze_generator.maze
+        self.collision_walls = maze_generator.collision_walls
 
     def run(self):
         while self.running:
@@ -32,6 +34,15 @@ class Game:
             ray_casting(
                 self.screen, self.player.pos, self.player.direction, self.maze
             )
-            self.player.movement()
+            self.player.movement(self.collision_walls)
+
+            #self.player.draw(self.screen)
+            #for i, row in enumerate(self.maze):
+            #    for j, symbol in enumerate(list(row)):
+            #        if symbol == 1:
+            #            pygame.draw.rect(
+            #                self.screen, 'black', (j * TILE_SIZE, i * TILE_SIZE,
+            #                                  TILE_SIZE, TILE_SIZE))
+
             self.clock.tick(FPS)
             pygame.display.flip()

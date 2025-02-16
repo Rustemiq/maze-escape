@@ -1,4 +1,6 @@
+import pygame
 from random import choice
+
 from modules.constants import *
 
 
@@ -7,6 +9,7 @@ class MazeGenerator:
         self.maze = [[1] * MAZE_WIDTH for _ in range(MAZE_WIDTH)]
         self.current_cell = MAZE_START
         self.stack = []
+        self.collision_walls = []
 
     def break_walls(self, x, y):
         x = x * 2 + 1
@@ -33,6 +36,16 @@ class MazeGenerator:
 
     def open_cell(self, x, y):
         self.maze[y * 2 + 1][x * 2 + 1] = 0
+
+    def fill_collision_walls(self):
+        for y, row in enumerate(self.maze):
+            for x, symbol in enumerate(row):
+                if symbol == 1:
+                    self.collision_walls.append(pygame.rect.Rect(
+                        x * TILE_SIZE,
+                        y * TILE_SIZE,
+                        TILE_SIZE,
+                        TILE_SIZE))
 
     def generate_maze(self):
         while True:
