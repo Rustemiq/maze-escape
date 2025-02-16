@@ -1,8 +1,8 @@
 import pygame
-from modules.ray_casting import ray_casting
-
+from modules.drawing import draw_all
 from modules.player import Player
 from modules.constants import *
+from modules.maze_generator import MazeGenerator
 
 
 class Game:
@@ -19,6 +19,7 @@ class Game:
             TILE_SIZE, TILE_SIZE, self.player_group, self.all_sprites
         )
         self.running = True
+        MazeGenerator().generate_maze()
 
     def run(self):
         while self.running:
@@ -26,8 +27,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            self.player.draw(self.screen)
+            draw_all(self.screen, self.player)
             self.player.movement()
-            ray_casting(self.screen, self.player.pos, self.player.direction)
+            #ray_casting(self.screen, self.player.pos, self.player.direction)
             self.clock.tick(FPS)
             pygame.display.flip()

@@ -1,10 +1,7 @@
 from random import choice
+from modules.constants import *
 
-MAZE_WIDTH = MAZE_HEIGHT = 15
-MAZE_START = 0, 0
-NEIGHBOURS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-
-class Board:
+class MazeGenerator:
     def __init__(self):
         self.board = [[1] * MAZE_WIDTH
                       for _ in range(MAZE_WIDTH)]
@@ -46,5 +43,3 @@ class Board:
         with open('maze.txt', 'w') as maze_file:
             maze_file.writelines(
                 [''.join(map(str, line)) + '\n' for line in self.board])
-
-Board().generate_maze()

@@ -3,6 +3,7 @@ import math
 
 from modules.constants import *
 
+
 def ray_casting(screen, player_pos, player_direction):
     cur_dir = player_direction - FOV / 2
     x0, y0 = player_pos
