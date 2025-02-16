@@ -41,10 +41,10 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_d]:
             dx += -self.speed * sin_d
             dy += self.speed * cos_d
-        if keys[pygame.K_RIGHT]:
-            self.direction += 0.03
-        if keys[pygame.K_LEFT]:
-            self.direction -= 0.03
+        if pygame.mouse.get_pos() != (WIDTH / 2, HEIGHT / 2):
+            mouse_dx = pygame.mouse.get_pos()[0] - WIDTH / 2
+            self.direction += mouse_dx * SENSITIVITY
+            pygame.mouse.set_pos(WIDTH / 2, HEIGHT / 2)
         dx, dy = self.detect_collision(self.x, self.y, dx, dy, collision_walls)
         self.x += dx
         self.y += dy

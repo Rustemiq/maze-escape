@@ -15,3 +15,4 @@ NEIGHBOURS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 DIST = NUM_RAYS / (2 * math.tan(FOV / 2))
 PROJ_COEFF = DIST * TILE_SIZE * 3
 PROJ_SCALE = WIDTH // NUM_RAYS
+SENSITIVITY = 0.0007

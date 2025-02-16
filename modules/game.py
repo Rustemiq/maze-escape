@@ -24,6 +24,7 @@ class Game:
         maze_generator.fill_collision_walls()
         self.maze = maze_generator.maze
         self.collision_walls = maze_generator.collision_walls
+        pygame.mouse.set_visible(False)
 
     def run(self):
         while self.running:
@@ -31,6 +32,9 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
             ray_casting(
                 self.screen, self.player.pos, self.player.direction, self.maze
             )
