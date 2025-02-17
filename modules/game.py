@@ -1,4 +1,6 @@
 import pygame
+
+from modules.drawing import Drawing
 from modules.ray_casting import ray_casting
 from modules.player import Player
 from modules.constants import *
@@ -24,29 +26,23 @@ class Game:
         maze_generator.fill_collision_walls()
         self.maze = maze_generator.maze
         self.collision_walls = maze_generator.collision_walls
+        self.drawing = Drawing(self.screen)
         pygame.mouse.set_visible(False)
 
     def run(self):
         while self.running:
-            self.screen.fill("white")
+            self.drawing.draw_bg()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
-            ray_casting(
-                self.screen, self.player.pos, self.player.direction, self.maze
+            is_finish = self.drawing.draw_walls(
+                self.player, self.maze
             )
             self.player.movement(self.collision_walls)
-
-            #self.player.draw(self.screen)
-            #for i, row in enumerate(self.maze):
-            #    for j, symbol in enumerate(list(row)):
-            #        if symbol == 1:
-            #            pygame.draw.rect(
-            #                self.screen, 'black', (j * TILE_SIZE, i * TILE_SIZE,
-            #                                  TILE_SIZE, TILE_SIZE))
-
+            if is_finish:
+                self.drawing.draw_finish_text()
             self.clock.tick(FPS)
             pygame.display.flip()
